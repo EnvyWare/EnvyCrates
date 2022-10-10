@@ -3,6 +3,7 @@ package com.envyful.crates.type.reward.impl;
 import com.envyful.crates.type.reward.RewardType;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
 public abstract class AbstractRewardType implements RewardType {
 
@@ -23,7 +24,7 @@ public abstract class AbstractRewardType implements RewardType {
     }
 
     @Override
-    public void read(JsonElement element) {
+    public void read(JsonElement element) throws CommandSyntaxException {
         JsonObject object = element.getAsJsonObject();
 
         this.id = object.get("id").getAsString();

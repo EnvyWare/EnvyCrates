@@ -1,5 +1,6 @@
 package com.envyful.crates.type.reward;
 
+import com.envyful.crates.type.reward.impl.SimpleCommandRewardType;
 import com.google.common.collect.Maps;
 
 import javax.annotation.Nullable;
@@ -12,7 +13,11 @@ public class RewardTypeFactory {
     private static final Map<String, Supplier<RewardType>> REGISTERED_REWARDS = Maps.newHashMap();
 
     static {
-        //TODO: register
+        register("simple_commands", SimpleCommandRewardType::new);
+    }
+
+    public static void register(String id, Supplier<RewardType> supplier) {
+        REGISTERED_REWARDS.put(id.toLowerCase(Locale.ROOT), supplier);
     }
 
     @Nullable
