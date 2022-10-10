@@ -3,6 +3,7 @@ package com.envyful.crates.type.crate.impl;
 import com.envyful.api.math.RandomWeightedSet;
 import com.envyful.crates.EnvyCrates;
 import com.envyful.crates.type.reward.RewardType;
+import com.envyful.crates.type.reward.RewardTypeFactory;
 import com.google.common.collect.Lists;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -27,7 +28,7 @@ public class SimpleItemCrate extends AbstractCrateType {
         for (JsonElement jsonElement : jsonObject.getAsJsonArray("rewards")) {
             JsonObject rewardObject = jsonElement.getAsJsonObject();
             String type = rewardObject.get("type").getAsString();
-            RewardType rewardType = null; //TODO:
+            RewardType rewardType = RewardTypeFactory.getInstance(type);
 
             if (rewardType == null) {
                 EnvyCrates.getLogger().error("Invalid reward type `" + type + "` in `" + this.id + "`");
