@@ -1,6 +1,7 @@
 package com.envyful.crates;
 
 import com.envyful.api.concurrency.UtilLogger;
+import com.envyful.crates.type.crate.CrateTypeFactory;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -22,7 +23,9 @@ public class EnvyCrates {
     }
 
     @SubscribeEvent
-    public void onServerStarting(FMLServerStartingEvent event) {}
+    public void onServerStarting(FMLServerStartingEvent event) {
+        CrateTypeFactory.read();
+    }
 
     public static EnvyCrates getInstance() {
         return instance;
