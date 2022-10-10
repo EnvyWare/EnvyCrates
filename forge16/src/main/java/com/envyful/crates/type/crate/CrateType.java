@@ -3,6 +3,7 @@ package com.envyful.crates.type.crate;
 import com.envyful.api.forge.player.ForgeEnvyPlayer;
 import com.envyful.crates.type.reward.RewardType;
 import com.google.gson.JsonElement;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
 import java.util.List;
 
@@ -16,6 +17,6 @@ public interface CrateType {
 
     List<RewardType> getAllRewards();
 
-    void read(JsonElement element);
+    void read(JsonElement element) throws CommandSyntaxException;
 
 }

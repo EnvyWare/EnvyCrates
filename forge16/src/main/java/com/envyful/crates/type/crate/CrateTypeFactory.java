@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -20,6 +21,10 @@ public class CrateTypeFactory {
 
     private static final Gson GSON = new GsonBuilder().create();
     private static final Map<String, Supplier<CrateType>> TYPES = Maps.newHashMap();
+
+    public static void register(String id, Supplier<CrateType> crateType) {
+        TYPES.put(id.toLowerCase(Locale.ROOT), crateType);
+    }
 
     @Nullable
     public static CrateType getInstance(String id) {
@@ -64,7 +69,11 @@ public class CrateTypeFactory {
                 continue;
             }
 
-            instance.read(json);
+            try {
+                instance.read(json); //TODO: add to CrateRegistry
+            } catch (CommandSyntaxException e) {
+                e.printStackTrace();
+            }
         }
     }
 
