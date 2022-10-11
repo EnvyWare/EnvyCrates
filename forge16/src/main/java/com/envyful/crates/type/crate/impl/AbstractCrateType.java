@@ -8,6 +8,7 @@ import com.google.gson.JsonObject;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.JsonToNBT;
+import net.minecraft.nbt.StringNBT;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,6 +32,7 @@ public abstract class AbstractCrateType implements CrateType {
     public void giveKey(ForgeEnvyPlayer player, int amount) {
         ItemStack copy = this.itemStack.copy();
         copy.setCount(amount);
+        copy.getOrCreateTag().put("ENVY_CRATES", StringNBT.valueOf(this.id));
         player.getParent().addItem(copy);
 
         if (this.givenKeyMessage != null) {
@@ -49,7 +51,7 @@ public abstract class AbstractCrateType implements CrateType {
 
         this.id = jsonObject.get("id").getAsString();
         this.displayName = jsonObject.get("display_name").getAsString();
-        this.itemStack = ItemStack.of(JsonToNBT.parseTag(jsonObject.get("key").getAsString()));
+        this.itemStack = ItemStack.of(JsonToNBT.parseTag(jsonObject.get("key").getAsJsonObject().toString()));
         this.givenKeyMessage = Stream.of(jsonObject.get("given_key_message").getAsJsonArray()).map(JsonElement::getAsString).collect(Collectors.toList());
     }
 }

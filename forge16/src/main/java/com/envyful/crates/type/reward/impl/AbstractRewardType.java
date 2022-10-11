@@ -28,6 +28,6 @@ public abstract class AbstractRewardType implements RewardType {
         JsonObject object = element.getAsJsonObject();
 
         this.id = object.get("id").getAsString();
-        this.weight = object.get("weigth").getAsDouble();
+        this.weight = object.get("weight").getAsDouble();
     }
 }

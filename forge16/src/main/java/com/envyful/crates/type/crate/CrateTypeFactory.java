@@ -1,6 +1,8 @@
 package com.envyful.crates.type.crate;
 
 import com.envyful.crates.EnvyCrates;
+import com.envyful.crates.type.CrateFactory;
+import com.envyful.crates.type.crate.impl.SimpleItemCrate;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -21,6 +23,10 @@ public class CrateTypeFactory {
 
     private static final Gson GSON = new GsonBuilder().create();
     private static final Map<String, Supplier<CrateType>> TYPES = Maps.newHashMap();
+
+    static {
+        register("simple", SimpleItemCrate::new);
+    }
 
     public static void register(String id, Supplier<CrateType> crateType) {
         TYPES.put(id.toLowerCase(Locale.ROOT), crateType);
@@ -70,7 +76,8 @@ public class CrateTypeFactory {
             }
 
             try {
-                instance.read(json); //TODO: add to CrateRegistry
+                instance.read(json);
+                CrateFactory.register(instance);
             } catch (CommandSyntaxException e) {
                 e.printStackTrace();
             }

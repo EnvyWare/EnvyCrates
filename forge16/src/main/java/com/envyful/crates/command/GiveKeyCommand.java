@@ -25,7 +25,8 @@ import net.minecraft.command.ICommandSource;
 public class GiveKeyCommand {
 
     @CommandProcessor
-    public void onCommand(@Sender ICommandSource sender, @Completable(PlayerTabCompleter.class) @Argument ForgeEnvyPlayer target,
+    public void onCommand(@Sender ICommandSource sender,
+                          @Completable(PlayerTabCompleter.class) @Argument ForgeEnvyPlayer target,
                           @Completable(CrateTabCompleter.class) @Argument CrateType crate,
                           @Argument(defaultValue = "1") int amount) {
         crate.giveKey(target, amount);

@@ -34,6 +34,7 @@ public class CrateFactory {
 
     @Nullable
     public static CrateType getCrateType(BlockPos pos) {
+        System.out.println(CRATES.toString() + " " + pos);
         return Optional.ofNullable(CRATES.get(pos)).map(CrateFactory::get).orElse(null);
     }
 

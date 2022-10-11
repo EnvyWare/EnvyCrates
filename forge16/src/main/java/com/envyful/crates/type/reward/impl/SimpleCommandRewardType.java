@@ -41,9 +41,9 @@ public class SimpleCommandRewardType extends AbstractRewardType {
         JsonObject object = element.getAsJsonObject();
 
         this.commands = Stream.of(object.get("commands").getAsJsonArray()).map(JsonArray::getAsString).collect(Collectors.toList());
-        this.display = ItemStack.of(JsonToNBT.parseTag(object.get("display").getAsString()));
+        this.display = ItemStack.of(JsonToNBT.parseTag(object.get("display").getAsJsonObject().toString()));
 
-        JsonObject displayData = object.getAsJsonObject("display");
+        JsonObject displayData = object.getAsJsonObject("display_data");
 
         this.displayX = displayData.get("x").getAsInt();
         this.displayY = displayData.get("y").getAsInt();
@@ -57,5 +57,10 @@ public class SimpleCommandRewardType extends AbstractRewardType {
         }
 
         pane.set(this.displayX, this.displayY, GuiFactory.displayable(this.display));
+    }
+
+    @Override
+    public ItemStack getDisplayItem() {
+        return this.display;
     }
 }

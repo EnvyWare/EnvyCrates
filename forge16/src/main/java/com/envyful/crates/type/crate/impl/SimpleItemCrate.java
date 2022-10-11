@@ -20,8 +20,6 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class SimpleItemCrate extends AbstractCrateType {
 
@@ -60,9 +58,19 @@ public class SimpleItemCrate extends AbstractCrateType {
 
         this.previewGuiSettings = UtilGson.GSON.fromJson(jsonObject.get("preview_gui_settings"), ConfigInterface.class);
         this.displayGuiSettings = UtilGson.GSON.fromJson(jsonObject.get("display_gui_settings"), ConfigInterface.class);
-        this.displaySlots = Stream.of(jsonObject.get("display_slots").getAsJsonArray()).map(JsonArray::getAsInt).collect(Collectors.toList());
+        this.displaySlots = this.parsePositions(jsonObject.get("display_slots").getAsJsonArray());
         this.spinDuration = jsonObject.get("spin_duration").getAsInt();
         this.finalRewardPosition = jsonObject.get("final_reward_position").getAsInt();
+    }
+
+    private List<Integer> parsePositions(JsonArray object) {
+        List<Integer> positions = Lists.newArrayList();
+
+        for (JsonElement slots : object) {
+            positions.add(slots.getAsInt());
+        }
+
+        return positions;
     }
 
     @Override
