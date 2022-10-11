@@ -40,7 +40,6 @@ public class CrateInteractListener {
     @SubscribeEvent
     public void onPlayerLeftClick(PlayerInteractEvent.LeftClickBlock event) {
         PlayerEntity player = event.getPlayer();
-        ItemStack itemStack = event.getItemStack();
 
         CrateType crateType = CrateFactory.getCrateType(event.getPos());
 

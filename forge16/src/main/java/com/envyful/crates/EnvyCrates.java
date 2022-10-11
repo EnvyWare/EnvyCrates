@@ -12,6 +12,7 @@ import com.envyful.api.type.UtilParse;
 import com.envyful.crates.command.CrateTabCompleter;
 import com.envyful.crates.command.EnvyCrateCommand;
 import com.envyful.crates.config.EnvyCratesLocale;
+import com.envyful.crates.listener.CrateBreakListener;
 import com.envyful.crates.listener.CrateInteractListener;
 import com.envyful.crates.type.CrateFactory;
 import com.envyful.crates.type.crate.CrateType;
@@ -54,6 +55,7 @@ public class EnvyCrates {
         GuiFactory.setPlatformFactory(new ForgeGuiFactory());
 
         MinecraftForge.EVENT_BUS.register(new CrateInteractListener());
+        MinecraftForge.EVENT_BUS.register(new CrateBreakListener());
     }
 
     public void reloadConfig() {
