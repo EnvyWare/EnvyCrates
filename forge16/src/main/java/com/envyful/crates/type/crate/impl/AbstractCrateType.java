@@ -20,6 +20,7 @@ public abstract class AbstractCrateType implements CrateType {
     protected String displayName;
     protected ItemStack itemStack;
     protected List<String> givenKeyMessage;
+    protected List<String> needAKeyMessage;
 
     protected AbstractCrateType() {}
 
@@ -46,6 +47,13 @@ public abstract class AbstractCrateType implements CrateType {
     }
 
     @Override
+    public void needAKey(ForgeEnvyPlayer player) {
+        for (String s : this.needAKeyMessage) {
+            player.message(UtilChatColour.colour(s));
+        }
+    }
+
+    @Override
     public void read(JsonElement element) throws CommandSyntaxException {
         JsonObject jsonObject = element.getAsJsonObject();
 
@@ -53,5 +61,6 @@ public abstract class AbstractCrateType implements CrateType {
         this.displayName = jsonObject.get("display_name").getAsString();
         this.itemStack = ItemStack.of(JsonToNBT.parseTag(jsonObject.get("key").getAsJsonObject().toString()));
         this.givenKeyMessage = Stream.of(jsonObject.get("given_key_message").getAsJsonArray()).map(JsonElement::getAsString).collect(Collectors.toList());
+        this.needAKeyMessage = Stream.of(jsonObject.get("need_a_key").getAsJsonArray()).map(JsonElement::getAsString).collect(Collectors.toList());
     }
 }

@@ -23,4 +23,5 @@ public interface CrateType {
 
     void open(ForgeEnvyPlayer player);
 
+    void needAKey(ForgeEnvyPlayer player);
 }

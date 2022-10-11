@@ -22,13 +22,9 @@ public class CrateInteractListener {
             return;
         }
 
-        if (itemStack.getTag() == null || !itemStack.getTag().contains("ENVY_CRATES")) {
-            //TODO: message
-            return;
-        }
-
-        if (!crateType.id().equalsIgnoreCase(itemStack.getTag().get("ENVY_CRATES").getAsString())) {
-            //TODO: message
+        if (itemStack.getTag() == null || !itemStack.getTag().contains("ENVY_CRATES") ||
+                !crateType.id().equalsIgnoreCase(itemStack.getTag().get("ENVY_CRATES").getAsString())) {
+            crateType.needAKey(EnvyCrates.getInstance().getPlayerManager().getPlayer((ServerPlayerEntity) player));
             return;
         }
 
@@ -39,5 +35,20 @@ public class CrateInteractListener {
         }
 
         crateType.open(EnvyCrates.getInstance().getPlayerManager().getPlayer((ServerPlayerEntity) player));
+    }
+
+    @SubscribeEvent
+    public void onPlayerLeftClick(PlayerInteractEvent.LeftClickBlock event) {
+        PlayerEntity player = event.getPlayer();
+        ItemStack itemStack = event.getItemStack();
+
+        CrateType crateType = CrateFactory.getCrateType(event.getPos());
+
+        if (crateType == null || (player.isCreative() && player.isCrouching())) {
+            return;
+        }
+
+        event.setCanceled(true);
+        crateType.preview(EnvyCrates.getInstance().getPlayerManager().getPlayer((ServerPlayerEntity) player), 1);
     }
 }
