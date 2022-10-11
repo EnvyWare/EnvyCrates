@@ -4,6 +4,8 @@ import com.envyful.api.config.type.ConfigInterface;
 import com.envyful.api.forge.chat.UtilChatColour;
 import com.envyful.api.forge.config.UtilConfigInterface;
 import com.envyful.api.forge.config.UtilConfigItem;
+import com.envyful.api.forge.items.ItemBuilder;
+import com.envyful.api.forge.items.ItemFlag;
 import com.envyful.api.forge.player.ForgeEnvyPlayer;
 import com.envyful.api.gui.factory.GuiFactory;
 import com.envyful.api.gui.pane.Pane;
@@ -17,6 +19,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import net.minecraft.enchantment.Enchantments;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -124,7 +127,15 @@ public class SimpleItemCrate extends AbstractCrateType {
                             }
 
                             int slot = spinSlots.get(0);
-                            pane1.set(slot % 9, slot / 9, GuiFactory.displayable(this.generateRandomReward().getDisplayItem()));
+
+                            if (timer.get() >= (this.spinDuration - 5)) {
+                                pane1.set(slot % 9, slot / 9, GuiFactory.displayable(new ItemBuilder(finalReward.getDisplayItem())
+                                        .enchant(Enchantments.UNBREAKING, 1)
+                                        .itemFlag(ItemFlag.HIDE_ENCHANTS)
+                                        .build()));
+                            } else {
+                                pane1.set(slot % 9, slot / 9, GuiFactory.displayable(this.generateRandomReward().getDisplayItem()));
+                            }
                         })
                         .build())
                 .build();
