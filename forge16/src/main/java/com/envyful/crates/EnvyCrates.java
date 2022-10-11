@@ -6,10 +6,14 @@ import com.envyful.api.forge.chat.UtilChatColour;
 import com.envyful.api.forge.command.ForgeCommandFactory;
 import com.envyful.api.forge.player.ForgeEnvyPlayer;
 import com.envyful.api.forge.player.ForgePlayerManager;
+import com.envyful.api.type.UtilParse;
 import com.envyful.crates.command.CrateTabCompleter;
 import com.envyful.crates.config.EnvyCratesLocale;
 import com.envyful.crates.type.crate.CrateTypeFactory;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.Util;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -64,6 +68,29 @@ public class EnvyCrates {
             }
 
             return onlinePlayer;
+        });
+        this.commandFactory.registerInjector(BlockPos.class, (source, args) -> {
+            String[] split = args[0].split(",");
+
+            if (split.length != 3) {
+                return null;
+            }
+
+            ServerPlayerEntity player = (ServerPlayerEntity) source;
+
+            BlockPos pos = new BlockPos(
+                    UtilParse.parseInteger(split[0].replace("~", player.position().x + "")).orElse(-1),
+                    UtilParse.parseInteger(split[1].replace("~", player.position().y + "")).orElse(-1),
+                    UtilParse.parseInteger(split[2].replace("~", player.position().z + "")).orElse(-1)
+            );
+
+            BlockState blockState = player.getLevel().getBlockState(pos);
+
+            if (blockState.isAir()) {
+                return null;
+            }
+
+            return pos;
         });
     }
 
