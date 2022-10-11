@@ -18,7 +18,7 @@ import net.minecraft.util.Util;
         }
 )
 @Permissible("com.envyful.crates.command")
-@SubCommands(ReloadCommand.class)
+@SubCommands({ReloadCommand.class, GiveKeyCommand.class})
 public class EnvyCrateCommand {
 
     @CommandProcessor
