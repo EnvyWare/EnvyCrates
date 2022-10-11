@@ -19,4 +19,8 @@ public interface CrateType {
 
     void read(JsonElement element) throws CommandSyntaxException;
 
+    void preview(ForgeEnvyPlayer player, int page);
+
+    void open(ForgeEnvyPlayer player);
+
 }
