@@ -8,7 +8,9 @@ import com.envyful.api.forge.player.ForgeEnvyPlayer;
 import com.envyful.api.forge.player.ForgePlayerManager;
 import com.envyful.api.type.UtilParse;
 import com.envyful.crates.command.CrateTabCompleter;
+import com.envyful.crates.command.EnvyCrateCommand;
 import com.envyful.crates.config.EnvyCratesLocale;
+import com.envyful.crates.listener.CrateInteractListener;
 import com.envyful.crates.type.crate.CrateTypeFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -45,6 +47,8 @@ public class EnvyCrates {
     @SubscribeEvent
     public void onServerStarting(FMLServerStartingEvent event) {
         CrateTypeFactory.read();
+
+        MinecraftForge.EVENT_BUS.register(new CrateInteractListener());
     }
 
     public void reloadConfig() {
@@ -92,6 +96,7 @@ public class EnvyCrates {
 
             return pos;
         });
+        this.commandFactory.registerCommand(event.getDispatcher(), new EnvyCrateCommand());
     }
 
     public static EnvyCrates getInstance() {
