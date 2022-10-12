@@ -6,6 +6,7 @@ import com.envyful.crates.type.crate.CrateType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Hand;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -13,6 +14,10 @@ public class CrateInteractListener {
 
     @SubscribeEvent
     public void onPlayerRightClick(PlayerInteractEvent.RightClickBlock event) {
+        if (event.getHand() != Hand.MAIN_HAND) {
+            return;
+        }
+
         PlayerEntity player = event.getPlayer();
         ItemStack itemStack = event.getItemStack();
 

@@ -52,6 +52,7 @@ public class EnvyCrates {
     @SubscribeEvent
     public void onServerStarting(FMLServerStartingEvent event) {
         CrateTypeFactory.read();
+        reloadConfig();
         GuiFactory.setPlatformFactory(new ForgeGuiFactory());
 
         MinecraftForge.EVENT_BUS.register(new CrateInteractListener());

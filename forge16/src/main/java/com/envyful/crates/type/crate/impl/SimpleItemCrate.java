@@ -1,6 +1,7 @@
 package com.envyful.crates.type.crate.impl;
 
 import com.envyful.api.config.type.ConfigInterface;
+import com.envyful.api.config.type.ExtendedConfigItem;
 import com.envyful.api.forge.chat.UtilChatColour;
 import com.envyful.api.forge.config.UtilConfigInterface;
 import com.envyful.api.forge.config.UtilConfigItem;
@@ -32,6 +33,9 @@ public class SimpleItemCrate extends AbstractCrateType {
     private List<Integer> displaySlots;
     private int spinDuration;
     private int finalRewardPosition;
+    private int previewPages;
+    private ExtendedConfigItem nextPageItem;
+    private ExtendedConfigItem previousPageItem;
 
     public SimpleItemCrate() {
         super();
@@ -64,6 +68,9 @@ public class SimpleItemCrate extends AbstractCrateType {
         this.displaySlots = this.parsePositions(jsonObject.get("display_slots").getAsJsonArray());
         this.spinDuration = jsonObject.get("spin_duration").getAsInt();
         this.finalRewardPosition = jsonObject.get("final_reward_position").getAsInt();
+        this.previewPages = jsonObject.get("preview_pages").getAsInt();
+        this.nextPageItem = UtilGson.GSON.fromJson(jsonObject.get("preview_next_page"), ExtendedConfigItem.class);
+        this.previousPageItem = UtilGson.GSON.fromJson(jsonObject.get("preview_previous_page"), ExtendedConfigItem.class);
     }
 
     private List<Integer> parsePositions(JsonArray object) {
@@ -88,7 +95,46 @@ public class SimpleItemCrate extends AbstractCrateType {
 
     @Override
     public void preview(ForgeEnvyPlayer player, int page) {
-        //TODO:
+        Pane pane = GuiFactory.paneBuilder()
+                .height(this.displayGuiSettings.getHeight())
+                .width(9)
+                .topLeftX(0)
+                .topLeftY(0)
+                .build();
+
+        UtilConfigInterface.fillBackground(pane, this.displayGuiSettings);
+
+        for (RewardType allReward : this.getAllRewards()) {
+            allReward.display(pane, page);
+        }
+
+        UtilConfigItem.builder()
+                .clickHandler((envyPlayer, clickType) -> {
+                    if (page == this.previewPages) {
+                        preview(player, 1);
+                    } else {
+                        preview(player, page + 1);
+                    }
+                })
+                .extendedConfigItem(player, pane, this.nextPageItem);
+
+        UtilConfigItem.builder()
+                .clickHandler((envyPlayer, clickType) -> {
+                    if (page == 1) {
+                        preview(player, this.previewPages);
+                    } else {
+                        preview(player, page - 1);
+                    }
+                })
+                .extendedConfigItem(player, pane, this.previousPageItem);
+
+        GuiFactory.guiBuilder()
+                .addPane(pane)
+                .title(UtilChatColour.colour(this.displayGuiSettings.getTitle()))
+                .height(this.displayGuiSettings.getHeight())
+                .setPlayerManager(EnvyCrates.getInstance().getPlayerManager())
+                .build()
+                .open(EnvyCrates.getInstance().getPlayerManager().getPlayer(player.getParent()));
     }
 
     @Override

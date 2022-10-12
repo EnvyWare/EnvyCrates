@@ -14,7 +14,7 @@ public class CrateBreakListener {
 
         CrateType crateType = CrateFactory.getCrateType(event.getPos());
 
-        if (crateType == null || !player.isCreative()) {
+        if (crateType == null || !player.isCreative() || !player.isCrouching()) {
             return;
         }
 
