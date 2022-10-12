@@ -21,7 +21,7 @@ public class CrateInteractListener {
         PlayerEntity player = event.getPlayer();
         ItemStack itemStack = event.getItemStack();
 
-        CrateType crateType = CrateFactory.getCrateType(event.getHitVec().getBlockPos());
+        CrateType crateType = CrateFactory.getCrateType(event.getPlayer().level, event.getHitVec().getBlockPos());
 
         if (crateType == null) {
             return;
@@ -46,7 +46,7 @@ public class CrateInteractListener {
     public void onPlayerLeftClick(PlayerInteractEvent.LeftClickBlock event) {
         PlayerEntity player = event.getPlayer();
 
-        CrateType crateType = CrateFactory.getCrateType(event.getPos());
+        CrateType crateType = CrateFactory.getCrateType(event.getPlayer().level, event.getPos());
 
         if (crateType == null || (player.isCreative() && player.isCrouching())) {
             return;

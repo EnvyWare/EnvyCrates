@@ -7,9 +7,11 @@ import com.envyful.api.command.annotate.executor.Argument;
 import com.envyful.api.command.annotate.executor.CommandProcessor;
 import com.envyful.api.command.annotate.executor.Completable;
 import com.envyful.api.command.annotate.executor.Sender;
+import com.envyful.api.forge.chat.UtilChatColour;
+import com.envyful.api.forge.player.ForgeEnvyPlayer;
+import com.envyful.crates.EnvyCrates;
 import com.envyful.crates.type.CrateFactory;
 import com.envyful.crates.type.crate.CrateType;
-import net.minecraft.command.ICommandSource;
 import net.minecraft.util.math.BlockPos;
 
 @Command(
@@ -25,15 +27,21 @@ import net.minecraft.util.math.BlockPos;
 public class SetCrateCommand {
 
     @CommandProcessor
-    public void onCommand(@Sender ICommandSource sender,
+    public void onCommand(@Sender ForgeEnvyPlayer sender,
                           @Completable(CrateTabCompleter.class) @Argument CrateType crate,
-                          @Argument BlockPos block) {
-        if (CrateFactory.isCrate(block)) {
-            //TODO:
+                          @Argument(defaultValue = "below_me") BlockPos block) {
+        if (CrateFactory.isCrate(sender.getParent().getLevel(), block)) {
+            for (String s : EnvyCrates.getInstance().getLocale().getCrateAlreadyThere()) {
+                sender.message(UtilChatColour.colour(s));
+            }
             return;
         }
 
-        CrateFactory.add(block, crate);
-        //TODO:
+        CrateFactory.add(sender.getParent().getLevel(), block, crate);
+        for (String s : EnvyCrates.getInstance().getLocale().getCrateAdded()) {
+            sender.message(UtilChatColour.colour(s
+                    .replace("%pos%", block.getX() + "," + block.getY() + "," + block.getZ())
+                    .replace("%crate%", crate.id())));
+        }
     }
 }

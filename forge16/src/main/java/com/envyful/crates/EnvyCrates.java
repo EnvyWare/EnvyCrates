@@ -1,5 +1,6 @@
 package com.envyful.crates;
 
+import com.envyful.api.command.sender.SenderTypeFactory;
 import com.envyful.api.concurrency.UtilLogger;
 import com.envyful.api.config.yaml.YamlConfigFactory;
 import com.envyful.api.forge.chat.UtilChatColour;
@@ -11,6 +12,7 @@ import com.envyful.api.gui.factory.GuiFactory;
 import com.envyful.api.type.UtilParse;
 import com.envyful.crates.command.CrateTabCompleter;
 import com.envyful.crates.command.EnvyCrateCommand;
+import com.envyful.crates.command.ForgeEnvyPlayerSender;
 import com.envyful.crates.config.EnvyCratesLocale;
 import com.envyful.crates.listener.CrateBreakListener;
 import com.envyful.crates.listener.CrateInteractListener;
@@ -26,6 +28,7 @@ import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
+import net.minecraftforge.fml.event.server.FMLServerStoppingEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -50,10 +53,17 @@ public class EnvyCrates {
     }
 
     @SubscribeEvent
+    public void onServerStopping(FMLServerStoppingEvent event) {
+        CrateFactory.save();
+    }
+
+    @SubscribeEvent
     public void onServerStarting(FMLServerStartingEvent event) {
         CrateTypeFactory.read();
         reloadConfig();
         GuiFactory.setPlatformFactory(new ForgeGuiFactory());
+
+        CrateFactory.load();
 
         MinecraftForge.EVENT_BUS.register(new CrateInteractListener());
         MinecraftForge.EVENT_BUS.register(new CrateBreakListener());
@@ -69,6 +79,7 @@ public class EnvyCrates {
 
     @SubscribeEvent
     public void onCommandRegister(RegisterCommandsEvent event) {
+        SenderTypeFactory.register(new ForgeEnvyPlayerSender());
         this.commandFactory.registerCompleter(new CrateTabCompleter());
         this.commandFactory.registerInjector(ForgeEnvyPlayer.class, (source, args) -> {
             ForgeEnvyPlayer onlinePlayer = this.playerManager.getOnlinePlayer(args[0]);
@@ -82,13 +93,27 @@ public class EnvyCrates {
             return onlinePlayer;
         });
         this.commandFactory.registerInjector(BlockPos.class, (source, args) -> {
+            ServerPlayerEntity player = (ServerPlayerEntity) source;
+
+            if (args[0].equals("below_me")) {
+                BlockPos pos = player.blockPosition().below();
+                BlockState blockState = player.getLevel().getBlockState(pos);
+
+                if (blockState.isAir()) {
+                    for (String s : this.locale.getCannotSetAir()) {
+                        player.sendMessage(UtilChatColour.colour(s), Util.NIL_UUID);
+                    }
+                    return null;
+                }
+
+                return pos;
+            }
+
             String[] split = args[0].split(",");
 
             if (split.length != 3) {
                 return null;
             }
-
-            ServerPlayerEntity player = (ServerPlayerEntity) source;
 
             BlockPos pos = new BlockPos(
                     UtilParse.parseInteger(split[0].replace("~", player.position().x + "")).orElse(-1),
@@ -99,6 +124,9 @@ public class EnvyCrates {
             BlockState blockState = player.getLevel().getBlockState(pos);
 
             if (blockState.isAir()) {
+                for (String s : this.locale.getCannotSetAir()) {
+                    player.sendMessage(UtilChatColour.colour(s), Util.NIL_UUID);
+                }
                 return null;
             }
 

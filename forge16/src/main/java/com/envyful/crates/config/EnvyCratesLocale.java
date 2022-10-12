@@ -19,6 +19,22 @@ public class EnvyCratesLocale extends AbstractYamlConfig {
             "&c&l(!) &cThat player is not online"
     );
 
+    private List<String> crateAlreadyThere = Lists.newArrayList(
+            "&c&l(!) &cThat block is already a crate block!"
+    );
+
+    private List<String> crateAdded = Lists.newArrayList(
+            "&e&l(!) &eSet %pos% to %crate%"
+    );
+
+    private List<String> crateRemoved = Lists.newArrayList(
+            "&e&l(!) &eRemoved crate at %pos% for %crate%"
+    );
+
+    private List<String> cannotSetAir = Lists.newArrayList(
+            "&c&l(!) &cCannot set air"
+    );
+
     public EnvyCratesLocale() {
         super();
     }
@@ -29,5 +45,21 @@ public class EnvyCratesLocale extends AbstractYamlConfig {
 
     public List<String> getNotOnline() {
         return this.notOnline;
+    }
+
+    public List<String> getCrateAlreadyThere() {
+        return this.crateAlreadyThere;
+    }
+
+    public List<String> getCrateAdded() {
+        return this.crateAdded;
+    }
+
+    public List<String> getCrateRemoved() {
+        return this.crateRemoved;
+    }
+
+    public List<String> getCannotSetAir() {
+        return this.cannotSetAir;
     }
 }
