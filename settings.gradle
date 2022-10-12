@@ -1,2 +1,3 @@
 rootProject.name = 'EnvyCrates'
 include 'forge16'
+include 'pixelmon16'

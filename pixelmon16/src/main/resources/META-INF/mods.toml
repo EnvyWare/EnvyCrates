@@ -1,0 +1,29 @@
+modLoader="javafml"
+loaderVersion="[36,)"
+license="MIT"
+issueTrackerURL="https://github.com/EnvyWare/EnvyCrates/issues"
+
+[[mods]]
+modId="envycratespixelmon"
+version="1.0.0"
+displayName="EnvyCrates Pixelmon Extension"
+displayURL="https://github.com/EnvyWare"
+credits="https://github.com/EnvyWare"
+authors="https://github.com/EnvyWare"
+description='''
+Crates stuff
+'''
+
+[[dependencies.envycratespixelmon]]
+modId="forge"
+mandatory=true
+versionRange="[36,)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.envycratespixelmon]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.16.5,1.17)"
+ordering="NONE"
+side="BOTH"
