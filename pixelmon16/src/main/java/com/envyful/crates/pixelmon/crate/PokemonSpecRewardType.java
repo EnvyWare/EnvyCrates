@@ -33,6 +33,10 @@ public class PokemonSpecRewardType extends AbstractRewardType {
         super();
     }
 
+    public String getSpec() {
+        return this.spec;
+    }
+
     @Override
     public void give(ForgeEnvyPlayer player) {
         if (this.givePoke) {
