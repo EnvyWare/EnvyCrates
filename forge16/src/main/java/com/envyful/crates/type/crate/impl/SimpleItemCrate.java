@@ -174,7 +174,7 @@ public class SimpleItemCrate extends AbstractCrateType {
 
                             int slot = spinSlots.get(0);
 
-                            if (timer.get() >= (this.spinDuration - 5)) {
+                            if (timer.get() == ((2 * this.spinDuration) - 5)) {
                                 pane1.set(slot % 9, slot / 9, GuiFactory.displayable(new ItemBuilder(finalReward.getDisplayItem())
                                         .enchant(Enchantments.UNBREAKING, 1)
                                         .itemFlag(ItemFlag.HIDE_ENCHANTS)
