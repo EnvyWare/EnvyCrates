@@ -26,6 +26,10 @@ public class CrateFactory {
         return LOADED_CRATES.get(id.toLowerCase(Locale.ROOT));
     }
 
+    public static void clear() {
+        LOADED_CRATES.clear();
+    }
+
     public static void register(CrateType crateType) {
         LOADED_CRATES.put(crateType.id().toLowerCase(Locale.ROOT), crateType);
     }

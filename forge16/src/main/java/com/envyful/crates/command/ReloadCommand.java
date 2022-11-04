@@ -6,6 +6,7 @@ import com.envyful.api.command.annotate.Permissible;
 import com.envyful.api.command.annotate.executor.CommandProcessor;
 import com.envyful.api.command.annotate.executor.Sender;
 import com.envyful.crates.EnvyCrates;
+import com.envyful.crates.type.crate.CrateTypeFactory;
 import net.minecraft.command.ICommandSource;
 
 @Command(
@@ -22,5 +23,6 @@ public class ReloadCommand {
     @CommandProcessor
     public void onCommand(@Sender ICommandSource sender, String[] args) {
         EnvyCrates.getInstance().reloadConfig();
+        CrateTypeFactory.reload();
     }
 }

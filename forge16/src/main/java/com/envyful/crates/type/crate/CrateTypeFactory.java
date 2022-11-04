@@ -43,6 +43,11 @@ public class CrateTypeFactory {
         return crateTypeSupplier.get();
     }
 
+    public static void reload() {
+        CrateFactory.clear();
+        read();
+    }
+
     public static void read() {
         File cratesFolder = Paths.get("config/EnvyCrates/crates").toFile();
 
