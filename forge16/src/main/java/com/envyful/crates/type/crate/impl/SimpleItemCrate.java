@@ -21,6 +21,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.enchantment.Enchantments;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -36,6 +38,9 @@ public class SimpleItemCrate extends AbstractCrateType {
     private int previewPages;
     private ExtendedConfigItem nextPageItem;
     private ExtendedConfigItem previousPageItem;
+    private String sound;
+    private float pitch;
+    private float volume;
 
     public SimpleItemCrate() {
         super();
@@ -71,6 +76,12 @@ public class SimpleItemCrate extends AbstractCrateType {
         this.previewPages = jsonObject.get("preview_pages").getAsInt();
         this.nextPageItem = UtilGson.GSON.fromJson(jsonObject.get("preview_next_page"), ExtendedConfigItem.class);
         this.previousPageItem = UtilGson.GSON.fromJson(jsonObject.get("preview_previous_page"), ExtendedConfigItem.class);
+
+        if (jsonObject.has("sound")) {
+            this.sound = jsonObject.get("sound").getAsString();
+            this.pitch = jsonObject.get("pitch").getAsFloat();
+            this.volume = jsonObject.get("volume").getAsFloat();
+        }
     }
 
     private List<Integer> parsePositions(JsonArray object) {
@@ -161,6 +172,10 @@ public class SimpleItemCrate extends AbstractCrateType {
 
                                 pane1.set(this.finalRewardPosition % 9, this.finalRewardPosition / 9, GuiFactory.displayable(finalReward.getDisplayItem()));
                                 return;
+                            }
+
+                            if (this.sound != null) {
+                                player.getParent().playSound(new SoundEvent(ResourceLocation.tryParse(this.sound)), this.volume, this.pitch);
                             }
 
                             List<Integer> spinSlots = this.displaySlots;
