@@ -8,16 +8,13 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class CrateInteractListener {
 
     @SubscribeEvent
     public void onPlayerRightClick(PlayerInteractEvent.RightClickBlock event) {
-        if (event.getHand() != Hand.MAIN_HAND) {
-            return;
-        }
-
         PlayerEntity player = event.getPlayer();
         ItemStack itemStack = event.getItemStack();
 
@@ -27,13 +24,18 @@ public class CrateInteractListener {
             return;
         }
 
+        event.setCanceled(true);
+        event.setUseBlock(Event.Result.DENY);
+
+        if (event.getHand() != Hand.MAIN_HAND) {
+            return;
+        }
+
         if (itemStack.getTag() == null || !itemStack.getTag().contains("ENVY_CRATES") ||
                 !crateType.id().equalsIgnoreCase(itemStack.getTag().get("ENVY_CRATES").getAsString())) {
             crateType.needAKey(EnvyCrates.getInstance().getPlayerManager().getPlayer((ServerPlayerEntity) player));
             return;
         }
-
-        event.setCanceled(true);
 
         if (!player.isCreative()) {
             event.getItemStack().shrink(1);
