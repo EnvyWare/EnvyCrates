@@ -58,7 +58,7 @@ public class SimpleCommandRewardType extends AbstractRewardType {
             return;
         }
 
-        pane.set(this.displayX, this.displayY, GuiFactory.displayable(this.display));
+        pane.set(this.displayX, this.displayY, GuiFactory.displayable(UtilConfigItem.fromConfigItem(this.display)));
     }
 
     @Override
