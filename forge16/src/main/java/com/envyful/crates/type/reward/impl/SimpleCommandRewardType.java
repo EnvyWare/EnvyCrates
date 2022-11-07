@@ -1,15 +1,17 @@
 package com.envyful.crates.type.reward.impl;
 
+import com.envyful.api.config.type.ExtendedConfigItem;
+import com.envyful.api.forge.config.UtilConfigItem;
 import com.envyful.api.forge.player.ForgeEnvyPlayer;
 import com.envyful.api.forge.server.UtilForgeServer;
 import com.envyful.api.gui.factory.GuiFactory;
 import com.envyful.api.gui.pane.Pane;
+import com.envyful.api.json.UtilGson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.JsonToNBT;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,7 +20,7 @@ import java.util.stream.Stream;
 public class SimpleCommandRewardType extends AbstractRewardType {
 
     private List<String> commands;
-    private ItemStack display;
+    private ExtendedConfigItem display;
     private int displayX;
     private int displayY;
     private int page;
@@ -41,7 +43,7 @@ public class SimpleCommandRewardType extends AbstractRewardType {
         JsonObject object = element.getAsJsonObject();
 
         this.commands = Stream.of(object.get("commands").getAsJsonArray()).map(JsonArray::getAsString).collect(Collectors.toList());
-        this.display = ItemStack.of(JsonToNBT.parseTag(object.get("display").getAsJsonObject().toString()));
+        this.display = UtilGson.GSON.fromJson(object.get("display"), ExtendedConfigItem.class);
 
         JsonObject displayData = object.getAsJsonObject("display_data");
 
@@ -61,6 +63,6 @@ public class SimpleCommandRewardType extends AbstractRewardType {
 
     @Override
     public ItemStack getDisplayItem() {
-        return this.display;
+        return UtilConfigItem.fromConfigItem(this.display);
     }
 }

@@ -15,7 +15,7 @@ buildscript {
 }
 
 apply plugin: 'net.minecraftforge.gradle'
-forgeVersion = "1.16.5"
+forgeVersion = "1.16.5-Pixelmon"
 
 minecraft {
     mappings channel: 'official', version: '1.16.5'
