@@ -21,6 +21,12 @@ public class CrateInteractListener {
         CrateType crateType = CrateFactory.getCrateType(event.getPlayer().level, event.getHitVec().getBlockPos());
 
         if (crateType == null) {
+            if (itemStack.getOrCreateTag().contains("ENVY_CRATES")) {
+                event.setCanceled(true);
+                event.setUseBlock(Event.Result.DENY);
+                return;
+            }
+
             return;
         }
 
