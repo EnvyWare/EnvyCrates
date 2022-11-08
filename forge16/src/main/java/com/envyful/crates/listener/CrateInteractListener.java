@@ -3,15 +3,27 @@ package com.envyful.crates.listener;
 import com.envyful.crates.EnvyCrates;
 import com.envyful.crates.type.CrateFactory;
 import com.envyful.crates.type.crate.CrateType;
+import com.envyful.crates.type.crate.CrateTypeFactory;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class CrateInteractListener {
+
+    @SubscribeEvent
+    public void onPlayerRightClickAir(PlayerInteractEvent.RightClickItem event) {
+        this.handleKeyInteract(event);
+    }
+
+    @SubscribeEvent
+    public void onPlayerRightClickAir(PlayerInteractEvent.EntityInteractSpecific event) {
+       this.handleKeyInteract(event);
+    }
 
     @SubscribeEvent
     public void onPlayerRightClick(PlayerInteractEvent.RightClickBlock event) {
@@ -21,12 +33,7 @@ public class CrateInteractListener {
         CrateType crateType = CrateFactory.getCrateType(event.getPlayer().level, event.getHitVec().getBlockPos());
 
         if (crateType == null) {
-            if (itemStack.getOrCreateTag().contains("ENVY_CRATES")) {
-                event.setCanceled(true);
-                event.setUseBlock(Event.Result.DENY);
-                return;
-            }
-
+            this.handleKeyInteract(event);
             return;
         }
 
@@ -49,6 +56,18 @@ public class CrateInteractListener {
 
         crateType.open(EnvyCrates.getInstance().getPlayerManager().getPlayer((ServerPlayerEntity) player));
     }
+
+    private void handleKeyInteract(PlayerInteractEvent event) {
+        if (!event.getItemStack().getOrCreateTag().contains("ENVY_CRATES")) {
+            return;
+        }
+
+        CrateType crateType = CrateTypeFactory.getInstance(event.getItemStack().getTag().get("ENVY_CRATES").getAsString());
+        event.setCanceled(true);
+        event.setCancellationResult(ActionResultType.FAIL);
+        crateType.preview(EnvyCrates.getInstance().getPlayerManager().getPlayer((ServerPlayerEntity) event.getPlayer()), 1);
+    }
+
 
     @SubscribeEvent
     public void onPlayerLeftClick(PlayerInteractEvent.LeftClickBlock event) {
