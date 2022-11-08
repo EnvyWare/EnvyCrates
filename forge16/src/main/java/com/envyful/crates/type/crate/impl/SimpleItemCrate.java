@@ -119,25 +119,29 @@ public class SimpleItemCrate extends AbstractCrateType {
             allReward.display(pane, page);
         }
 
-        UtilConfigItem.builder()
-                .clickHandler((envyPlayer, clickType) -> {
-                    if (page == this.previewPages) {
-                        preview(player, 1);
-                    } else {
-                        preview(player, page + 1);
-                    }
-                })
-                .extendedConfigItem(player, pane, this.nextPageItem);
+        if (page != this.previewPages) {
+            UtilConfigItem.builder()
+                    .clickHandler((envyPlayer, clickType) -> {
+                        if (page == this.previewPages) {
+                            preview(player, 1);
+                        } else {
+                            preview(player, page + 1);
+                        }
+                    })
+                    .extendedConfigItem(player, pane, this.nextPageItem);
+        }
 
-        UtilConfigItem.builder()
-                .clickHandler((envyPlayer, clickType) -> {
-                    if (page == 1) {
-                        preview(player, this.previewPages);
-                    } else {
-                        preview(player, page - 1);
-                    }
-                })
-                .extendedConfigItem(player, pane, this.previousPageItem);
+        if (page != 1) {
+            UtilConfigItem.builder()
+                    .clickHandler((envyPlayer, clickType) -> {
+                        if (page == 1) {
+                            preview(player, this.previewPages);
+                        } else {
+                            preview(player, page - 1);
+                        }
+                    })
+                    .extendedConfigItem(player, pane, this.previousPageItem);
+        }
 
         GuiFactory.guiBuilder()
                 .addPane(pane)
