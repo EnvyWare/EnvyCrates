@@ -3,7 +3,6 @@ package com.envyful.crates.listener;
 import com.envyful.crates.EnvyCrates;
 import com.envyful.crates.type.CrateFactory;
 import com.envyful.crates.type.crate.CrateType;
-import com.envyful.crates.type.crate.CrateTypeFactory;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -62,7 +61,7 @@ public class CrateInteractListener {
             return;
         }
 
-        CrateType crateType = CrateTypeFactory.getInstance(event.getItemStack().getTag().get("ENVY_CRATES").getAsString());
+        CrateType crateType = CrateFactory.get(event.getItemStack().getTag().get("ENVY_CRATES").getAsString());
         event.setCanceled(true);
         event.setCancellationResult(ActionResultType.FAIL);
         crateType.preview(EnvyCrates.getInstance().getPlayerManager().getPlayer((ServerPlayerEntity) event.getPlayer()), 1);
