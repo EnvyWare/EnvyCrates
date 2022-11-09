@@ -7,7 +7,6 @@ import com.envyful.api.forge.server.UtilForgeServer;
 import com.envyful.api.gui.factory.GuiFactory;
 import com.envyful.api.gui.pane.Pane;
 import com.envyful.api.json.UtilGson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
@@ -15,7 +14,7 @@ import net.minecraft.item.ItemStack;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 public class SimpleCommandRewardType extends AbstractRewardType {
 
@@ -42,7 +41,7 @@ public class SimpleCommandRewardType extends AbstractRewardType {
 
         JsonObject object = element.getAsJsonObject();
 
-        this.commands = Stream.of(object.get("commands").getAsJsonArray()).map(JsonArray::getAsString).collect(Collectors.toList());
+        this.commands = StreamSupport.stream(object.get("commands").getAsJsonArray().spliterator(), false).map(JsonElement::getAsString).collect(Collectors.toList());
         this.display = UtilGson.GSON.fromJson(object.get("display"), ExtendedConfigItem.class);
 
         JsonObject displayData = object.getAsJsonObject("display_data");
