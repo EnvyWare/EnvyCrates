@@ -109,13 +109,13 @@ public class SimpleItemCrate extends AbstractCrateType {
     @Override
     public void preview(ForgeEnvyPlayer player, int page) {
         Pane pane = GuiFactory.paneBuilder()
-                .height(this.displayGuiSettings.getHeight())
+                .height(this.previewGuiSettings.getHeight())
                 .width(9)
                 .topLeftX(0)
                 .topLeftY(0)
                 .build();
 
-        UtilConfigInterface.fillBackground(pane, this.displayGuiSettings);
+        UtilConfigInterface.fillBackground(pane, this.previewGuiSettings);
 
         for (RewardType allReward : this.getAllRewards()) {
             allReward.display(pane, page);
@@ -147,8 +147,8 @@ public class SimpleItemCrate extends AbstractCrateType {
 
         GuiFactory.guiBuilder()
                 .addPane(pane)
-                .title(UtilChatColour.colour(this.displayGuiSettings.getTitle()))
-                .height(this.displayGuiSettings.getHeight())
+                .title(UtilChatColour.colour(this.previewGuiSettings.getTitle()))
+                .height(this.previewGuiSettings.getHeight())
                 .setPlayerManager(EnvyCrates.getInstance().getPlayerManager())
                 .build()
                 .open(EnvyCrates.getInstance().getPlayerManager().getPlayer(player.getParent()));
