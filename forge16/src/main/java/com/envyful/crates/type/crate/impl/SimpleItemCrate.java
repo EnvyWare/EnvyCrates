@@ -21,8 +21,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.enchantment.Enchantments;
+import net.minecraft.network.play.server.SPlaySoundPacket;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.vector.Vector3d;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -179,7 +181,8 @@ public class SimpleItemCrate extends AbstractCrateType {
                             }
 
                             if (this.sound != null) {
-                                player.getParent().playSound(new SoundEvent(ResourceLocation.tryParse(this.sound)), this.volume, this.pitch);
+                                player.getParent().connection.send(new SPlaySoundPacket(ResourceLocation.tryParse(this.sound), SoundCategory.MUSIC,
+                                        new Vector3d(player.getParent().getX(), player.getParent().getY(), player.getParent().getZ()), 1.0f, 1.0f));
                             }
 
                             List<Integer> spinSlots = this.displaySlots;
