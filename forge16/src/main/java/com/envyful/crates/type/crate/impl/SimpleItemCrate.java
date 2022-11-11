@@ -172,6 +172,7 @@ public class SimpleItemCrate extends AbstractCrateType {
                             timer.incrementAndGet();
 
                             if (timer.get() >= (2 * this.spinDuration)) {
+                                finalReward.playSound(player.getParent());
                                 for (Integer spinSlot : this.displaySlots) {
                                     pane1.set(spinSlot % 9, spinSlot / 9, GuiFactory.displayable(UtilConfigItem.fromConfigItem(this.previewGuiSettings.getFillerItems().get(0))));
                                 }
@@ -196,7 +197,15 @@ public class SimpleItemCrate extends AbstractCrateType {
 
                             int slot = spinSlots.get(0);
 
-                            if (timer.get() == ((2 * this.spinDuration) - 5)) {
+                            int subtraction = this.displaySlots.indexOf(this.finalRewardPosition);
+
+                            if (subtraction == -1) {
+                                subtraction = 5;
+                            } else {
+                                subtraction = this.displaySlots.size() - subtraction;
+                            }
+
+                            if (timer.get() == ((2 * this.spinDuration) - (2 * subtraction))) {
                                 pane1.set(slot % 9, slot / 9, GuiFactory.displayable(new ItemBuilder(finalReward.getDisplayItem())
                                         .enchant(Enchantments.UNBREAKING, 1)
                                         .itemFlag(ItemFlag.HIDE_ENCHANTS)
