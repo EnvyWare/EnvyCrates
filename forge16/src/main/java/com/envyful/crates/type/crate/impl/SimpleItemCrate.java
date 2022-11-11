@@ -1,6 +1,7 @@
 package com.envyful.crates.type.crate.impl;
 
 import com.envyful.api.config.type.ConfigInterface;
+import com.envyful.api.config.type.ConfigItem;
 import com.envyful.api.config.type.ExtendedConfigItem;
 import com.envyful.api.forge.chat.UtilChatColour;
 import com.envyful.api.forge.config.UtilConfigInterface;
@@ -27,6 +28,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.vector.Vector3d;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class SimpleItemCrate extends AbstractCrateType {
@@ -158,6 +160,7 @@ public class SimpleItemCrate extends AbstractCrateType {
     public void open(ForgeEnvyPlayer player) {
         AtomicInteger timer = new AtomicInteger(0);
         RewardType finalReward = this.generateRandomReward();
+        AtomicBoolean cleared = new AtomicBoolean(false);
 
         Pane pane = GuiFactory.paneBuilder()
                 .height(this.displayGuiSettings.getHeight())
@@ -173,8 +176,18 @@ public class SimpleItemCrate extends AbstractCrateType {
 
                             if (timer.get() >= (2 * this.spinDuration)) {
                                 finalReward.playSound(player.getParent());
-                                for (Integer spinSlot : this.displaySlots) {
-                                    pane1.set(spinSlot % 9, spinSlot / 9, GuiFactory.displayable(UtilConfigItem.fromConfigItem(this.previewGuiSettings.getFillerItems().get(0))));
+
+                                if (!cleared.get()) {
+                                    cleared.set(true);
+                                    int counter = 0;
+                                    for (ConfigItem fillerItem : this.displayGuiSettings.getFillerItems()) {
+                                        ++counter;
+                                        if (!fillerItem.isEnabled()) {
+                                            continue;
+                                        }
+
+                                        pane1.set(counter % 9, counter / 9, GuiFactory.displayable(UtilConfigItem.fromConfigItem(fillerItem)));
+                                    }
                                 }
 
                                 pane1.set(this.finalRewardPosition % 9, this.finalRewardPosition / 9, GuiFactory.displayable(finalReward.getDisplayItem()));
@@ -205,7 +218,7 @@ public class SimpleItemCrate extends AbstractCrateType {
                                 subtraction = this.displaySlots.size() - subtraction;
                             }
 
-                            if (timer.get() == ((2 * this.spinDuration) - (2 * subtraction))) {
+                            if (timer.get() == ((2 * this.spinDuration) - subtraction)) {
                                 pane1.set(slot % 9, slot / 9, GuiFactory.displayable(new ItemBuilder(finalReward.getDisplayItem())
                                         .enchant(Enchantments.UNBREAKING, 1)
                                         .itemFlag(ItemFlag.HIDE_ENCHANTS)
