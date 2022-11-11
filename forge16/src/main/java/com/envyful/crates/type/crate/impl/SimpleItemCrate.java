@@ -182,7 +182,7 @@ public class SimpleItemCrate extends AbstractCrateType {
                                     int counter = 0;
                                     for (ConfigItem fillerItem : this.displayGuiSettings.getFillerItems()) {
                                         ++counter;
-                                        if (!fillerItem.isEnabled()) {
+                                        if (!fillerItem.isEnabled() || counter == this.finalRewardPosition) {
                                             continue;
                                         }
 
@@ -190,7 +190,10 @@ public class SimpleItemCrate extends AbstractCrateType {
                                     }
                                 }
 
-                                pane1.set(this.finalRewardPosition % 9, this.finalRewardPosition / 9, GuiFactory.displayable(finalReward.getDisplayItem()));
+                                pane1.set(this.finalRewardPosition % 9, this.finalRewardPosition / 9, GuiFactory.displayable(new ItemBuilder(finalReward.getDisplayItem())
+                                        .enchant(Enchantments.UNBREAKING, 1)
+                                        .itemFlag(ItemFlag.HIDE_ENCHANTS)
+                                        .build()));
                                 return;
                             }
 
