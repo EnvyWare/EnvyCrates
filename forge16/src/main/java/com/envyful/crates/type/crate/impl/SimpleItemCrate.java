@@ -181,12 +181,13 @@ public class SimpleItemCrate extends AbstractCrateType {
                                     cleared.set(true);
                                     int counter = 0;
                                     for (ConfigItem fillerItem : this.displayGuiSettings.getFillerItems()) {
-                                        ++counter;
                                         if (!fillerItem.isEnabled() || counter == this.finalRewardPosition) {
+                                            ++counter;
                                             continue;
                                         }
 
                                         pane1.set(counter % 9, counter / 9, GuiFactory.displayable(UtilConfigItem.fromConfigItem(fillerItem)));
+                                        ++counter;
                                     }
                                 }
 
