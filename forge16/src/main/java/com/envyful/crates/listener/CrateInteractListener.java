@@ -50,7 +50,11 @@ public class CrateInteractListener {
         }
 
         if (!player.isCreative()) {
-            event.getItemStack().shrink(1);
+            if (event.getItemStack().getCount() <= 1) {
+                event.getPlayer().inventory.removeItem(event.getItemStack());
+            } else {
+                event.getItemStack().shrink(1);
+            }
         }
 
         crateType.open(EnvyCrates.getInstance().getPlayerManager().getPlayer((ServerPlayerEntity) player));
