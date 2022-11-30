@@ -43,8 +43,6 @@ public class SimpleItemCrate extends AbstractCrateType {
     private ExtendedConfigItem nextPageItem;
     private ExtendedConfigItem previousPageItem;
     private String sound;
-    private float pitch;
-    private float volume;
 
     public SimpleItemCrate() {
         super();
@@ -64,7 +62,7 @@ public class SimpleItemCrate extends AbstractCrateType {
             RewardType rewardType = RewardTypeFactory.getInstance(type);
 
             if (rewardType == null) {
-                EnvyCrates.getLogger().error("Invalid reward type `" + type + "` in `" + this.id + "`");
+                EnvyCrates.getLogger().error("Invalid reward type `{}` in `{}`", type, this.id);
                 continue;
             }
 
@@ -83,8 +81,6 @@ public class SimpleItemCrate extends AbstractCrateType {
 
         if (jsonObject.has("sound")) {
             this.sound = jsonObject.get("sound").getAsString();
-            this.pitch = jsonObject.get("pitch").getAsFloat();
-            this.volume = jsonObject.get("volume").getAsFloat();
         }
     }
 

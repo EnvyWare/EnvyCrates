@@ -28,6 +28,10 @@ public class CrateTypeFactory {
         register("simple", SimpleItemCrate::new);
     }
 
+    private CrateTypeFactory() {
+        throw new UnsupportedOperationException("Static factory");
+    }
+
     public static void register(String id, Supplier<CrateType> crateType) {
         TYPES.put(id.toLowerCase(Locale.ROOT), crateType);
     }
@@ -76,7 +80,7 @@ public class CrateTypeFactory {
             CrateType instance = getInstance(type);
 
             if (instance == null) {
-                EnvyCrates.getLogger().error("Invalid crate type `" + type + "` in file `" + file.getAbsolutePath() + "`.");
+                EnvyCrates.getLogger().error("Invalid crate type `{}` in file `{}`.", type, file.getAbsolutePath());
                 continue;
             }
 

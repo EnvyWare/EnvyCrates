@@ -43,8 +43,8 @@ public class CrateInteractListener {
             return;
         }
 
-        if (itemStack.getTag() == null || !itemStack.getTag().contains("ENVY_CRATES") ||
-                !crateType.id().equalsIgnoreCase(itemStack.getTag().get("ENVY_CRATES").getAsString())) {
+        if (itemStack.getCount() < 1 || itemStack.getTag() == null || !itemStack.getTag().contains(EnvyCrates.KEY_NBT_TAG) ||
+                !crateType.id().equalsIgnoreCase(itemStack.getTag().get(EnvyCrates.KEY_NBT_TAG).getAsString())) {
             crateType.needAKey(EnvyCrates.getInstance().getPlayerManager().getPlayer((ServerPlayerEntity) player));
             return;
         }
@@ -61,11 +61,11 @@ public class CrateInteractListener {
     }
 
     private void handleKeyInteract(PlayerInteractEvent event) {
-        if (!event.getItemStack().getOrCreateTag().contains("ENVY_CRATES")) {
+        if (!event.getItemStack().getOrCreateTag().contains(EnvyCrates.KEY_NBT_TAG)) {
             return;
         }
 
-        CrateType crateType = CrateFactory.get(event.getItemStack().getTag().get("ENVY_CRATES").getAsString());
+        CrateType crateType = CrateFactory.get(event.getItemStack().getTag().get(EnvyCrates.KEY_NBT_TAG).getAsString());
         event.setCanceled(true);
         event.setCancellationResult(ActionResultType.FAIL);
         crateType.preview(EnvyCrates.getInstance().getPlayerManager().getPlayer((ServerPlayerEntity) event.getPlayer()), 1);

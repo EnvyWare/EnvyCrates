@@ -37,6 +37,8 @@ import java.io.IOException;
 @Mod("envycrates")
 public class EnvyCrates {
 
+    public static final String KEY_NBT_TAG = "ENVY_CRATES";
+
     private static EnvyCrates instance;
 
     private Logger logger = LogManager.getLogger("envycrates");

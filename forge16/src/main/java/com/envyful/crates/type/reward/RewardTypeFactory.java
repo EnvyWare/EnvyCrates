@@ -16,6 +16,10 @@ public class RewardTypeFactory {
         register("simple_commands", SimpleCommandRewardType::new);
     }
 
+    private RewardTypeFactory() {
+        throw new UnsupportedOperationException("Static Factory");
+    }
+
     public static void register(String id, Supplier<RewardType> supplier) {
         REGISTERED_REWARDS.put(id.toLowerCase(Locale.ROOT), supplier);
     }

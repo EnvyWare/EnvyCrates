@@ -15,7 +15,7 @@ public abstract class AbstractRewardType implements RewardType {
     protected double weight;
     private ConfigSound winSound;
 
-    public AbstractRewardType() {
+    protected AbstractRewardType() {
     }
 
     @Override

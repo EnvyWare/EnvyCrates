@@ -11,6 +11,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import java.io.*;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Locale;
@@ -21,6 +22,10 @@ public class CrateFactory {
 
     private static final Map<String, CrateType> LOADED_CRATES = Maps.newHashMap();
     private static final Map<Pair<String, BlockPos>, String> CRATES = Maps.newConcurrentMap();
+
+    private CrateFactory() {
+        throw new UnsupportedOperationException("Static factory");
+    }
 
     public static CrateType get(String id) {
         return LOADED_CRATES.get(id.toLowerCase(Locale.ROOT));
@@ -59,7 +64,11 @@ public class CrateFactory {
         File cratePositions = Paths.get("config/EnvyCrates/crates.yml").toFile();
 
         if (cratePositions.exists()) {
-            cratePositions.delete();
+            try {
+                Files.delete(cratePositions.toPath());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         if (!cratePositions.exists()) {
