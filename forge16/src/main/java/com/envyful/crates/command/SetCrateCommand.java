@@ -29,7 +29,7 @@ public class SetCrateCommand {
     @CommandProcessor
     public void onCommand(@Sender ForgeEnvyPlayer sender,
                           @Completable(CrateTabCompleter.class) @Argument CrateType crate,
-                          @Argument(defaultValue = "below_me") BlockPos block) {
+                          @Argument(defaultValue = "looking") BlockPos block) {
         if (CrateFactory.isCrate(sender.getParent().getLevel(), block)) {
             for (String s : EnvyCrates.getInstance().getLocale().getCrateAlreadyThere()) {
                 sender.message(UtilChatColour.colour(s));

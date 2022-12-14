@@ -23,6 +23,9 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.RayTraceContext;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -109,6 +112,23 @@ public class EnvyCrates {
                 }
 
                 return pos;
+            }
+
+            if (args[0].equalsIgnoreCase("looking")) {
+                BlockRayTraceResult clip = player.level.clip(new RayTraceContext(
+                        player.position(),
+                        player.position().add(player.getLookAngle().scale(5)),
+                        RayTraceContext.BlockMode.COLLIDER,
+                        RayTraceContext.FluidMode.NONE, player));
+
+                if (clip.getType() == RayTraceResult.Type.MISS) {
+                    for (String s : this.locale.getCannotSetAir()) {
+                        player.sendMessage(UtilChatColour.colour(s), Util.NIL_UUID);
+                    }
+                    return null;
+                }
+
+                return clip.getBlockPos();
             }
 
             String[] split = args[0].split(",");
