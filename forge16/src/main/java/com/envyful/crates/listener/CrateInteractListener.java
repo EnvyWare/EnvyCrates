@@ -61,7 +61,7 @@ public class CrateInteractListener {
     }
 
     private void handleKeyInteract(PlayerInteractEvent event) {
-        if (!event.getItemStack().getOrCreateTag().contains(EnvyCrates.KEY_NBT_TAG)) {
+        if (event.getItemStack().getTag() == null || !event.getItemStack().getTag().contains(EnvyCrates.KEY_NBT_TAG)) {
             return;
         }
 
