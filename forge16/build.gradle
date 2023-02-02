@@ -46,8 +46,8 @@ dependencies {
     minecraft 'net.minecraftforge:forge:1.16.5-36.2.34'
 
     shadow group: 'org.spongepowered', name: 'configurate-yaml', version: '4.0.0'
-    shadow (group: 'com.envyful.api', name: 'commons', version: '4.0.7')
-    shadow (group: 'com.envyful.api', name: 'forge16', version: '4.0.7') {
+    shadow (group: 'com.envyful.api', name: 'commons', version: '4.2.5')
+    shadow (group: 'com.envyful.api', name: 'forge16', version: '4.2.5') {
         transitive = false
     }
 }

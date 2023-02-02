@@ -2,6 +2,7 @@ package com.envyful.crates.type.crate.impl;
 
 import com.envyful.api.config.type.ExtendedConfigItem;
 import com.envyful.api.forge.chat.UtilChatColour;
+import com.envyful.api.forge.concurrency.UtilForgeConcurrency;
 import com.envyful.api.forge.config.UtilConfigItem;
 import com.envyful.api.forge.player.ForgeEnvyPlayer;
 import com.envyful.api.json.UtilGson;
@@ -36,7 +37,11 @@ public abstract class AbstractCrateType implements CrateType {
         ItemStack copy = UtilConfigItem.fromConfigItem(this.itemStack);
         copy.setCount(amount);
         copy.getOrCreateTag().put("ENVY_CRATES", StringNBT.valueOf(this.id));
-        player.getParent().addItem(copy);
+
+        UtilForgeConcurrency.runSync(() -> {
+            player.getParent().addItem(copy);
+            player.getParent().inventory.setChanged();
+        });
 
         if (this.givenKeyMessage != null) {
             for (String s : this.givenKeyMessage) {
