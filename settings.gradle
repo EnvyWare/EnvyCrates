@@ -16,4 +16,5 @@ plugins {
 
 rootProject.name = 'EnvyCrates'
 include 'forge16'
+include 'forge20'
 include 'pixelmon16'
