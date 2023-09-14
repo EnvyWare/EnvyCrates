@@ -1,24 +1,20 @@
 package com.envyful.crates.command;
 
-import com.envyful.api.command.annotate.Child;
 import com.envyful.api.command.annotate.Command;
-import com.envyful.api.command.annotate.Permissible;
+import com.envyful.api.command.annotate.description.Description;
 import com.envyful.api.command.annotate.executor.CommandProcessor;
 import com.envyful.api.command.annotate.executor.Sender;
+import com.envyful.api.command.annotate.permission.Permissible;
 import com.envyful.api.forge.chat.UtilChatColour;
 import com.envyful.crates.EnvyCrates;
 import com.envyful.crates.type.crate.CrateTypeFactory;
 import net.minecraft.commands.CommandSource;
 
 @Command(
-        value = "reload",
-        description = "Reload the config",
-        aliases = {
-                "reload"
-        }
+        value = "reload"
 )
 @Permissible("com.envyful.crates.command.reload")
-@Child
+@Description("Reloads the config & crates")
 public class ReloadCommand {
 
     @CommandProcessor

@@ -1,12 +1,12 @@
 package com.envyful.crates.command;
 
-import com.envyful.api.command.annotate.Child;
 import com.envyful.api.command.annotate.Command;
-import com.envyful.api.command.annotate.Permissible;
+import com.envyful.api.command.annotate.description.Description;
 import com.envyful.api.command.annotate.executor.Argument;
 import com.envyful.api.command.annotate.executor.CommandProcessor;
 import com.envyful.api.command.annotate.executor.Completable;
 import com.envyful.api.command.annotate.executor.Sender;
+import com.envyful.api.command.annotate.permission.Permissible;
 import com.envyful.api.forge.chat.UtilChatColour;
 import com.envyful.api.forge.player.ForgeEnvyPlayer;
 import com.envyful.crates.EnvyCrates;
@@ -15,15 +15,14 @@ import com.envyful.crates.type.crate.CrateType;
 import net.minecraft.core.BlockPos;
 
 @Command(
-        value = "setcrate",
-        description = "Sets a crate position",
-        aliases = {
+        value = {
+                "setcrate",
                 "sc",
                 "set"
         }
 )
 @Permissible("com.envyful.crates.command.set")
-@Child
+@Description("Sets a crate at the specified location")
 public class SetCrateCommand {
 
     @CommandProcessor

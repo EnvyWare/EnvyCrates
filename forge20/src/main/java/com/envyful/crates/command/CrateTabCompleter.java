@@ -7,7 +7,6 @@ import net.minecraft.commands.CommandSource;
 
 import java.lang.annotation.Annotation;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class CrateTabCompleter implements TabCompleter<CrateType, CommandSource> {
     @Override
@@ -22,6 +21,6 @@ public class CrateTabCompleter implements TabCompleter<CrateType, CommandSource>
 
     @Override
     public List<String> getCompletions(CommandSource sender, String[] currentData, Annotation... completionData) {
-        return CrateFactory.getAll().stream().map(CrateType::id).collect(Collectors.toList());
+        return CrateFactory.getAll().stream().map(CrateType::id).toList();
     }
 }

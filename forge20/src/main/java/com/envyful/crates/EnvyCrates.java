@@ -1,10 +1,10 @@
 package com.envyful.crates;
 
-import com.envyful.api.command.sender.SenderTypeFactory;
 import com.envyful.api.concurrency.UtilLogger;
 import com.envyful.api.config.yaml.YamlConfigFactory;
 import com.envyful.api.forge.chat.UtilChatColour;
 import com.envyful.api.forge.command.ForgeCommandFactory;
+import com.envyful.api.forge.command.parser.ForgeAnnotationCommandParser;
 import com.envyful.api.forge.gui.factory.ForgeGuiFactory;
 import com.envyful.api.forge.player.ForgeEnvyPlayer;
 import com.envyful.api.forge.player.ForgePlayerManager;
@@ -12,7 +12,6 @@ import com.envyful.api.gui.factory.GuiFactory;
 import com.envyful.api.type.UtilParse;
 import com.envyful.crates.command.CrateTabCompleter;
 import com.envyful.crates.command.EnvyCrateCommand;
-import com.envyful.crates.command.ForgeEnvyPlayerSender;
 import com.envyful.crates.config.EnvyCratesLocale;
 import com.envyful.crates.listener.CrateBreakListener;
 import com.envyful.crates.listener.CrateInteractListener;
@@ -45,7 +44,7 @@ public class EnvyCrates {
     private Logger logger = LogManager.getLogger("envycrates");
 
     private ForgePlayerManager playerManager = new ForgePlayerManager();
-    private ForgeCommandFactory commandFactory = new ForgeCommandFactory();
+    private ForgeCommandFactory commandFactory = new ForgeCommandFactory(ForgeAnnotationCommandParser::new, playerManager);
 
     private EnvyCratesLocale locale;
 
@@ -82,7 +81,6 @@ public class EnvyCrates {
 
     @SubscribeEvent
     public void onCommandRegister(RegisterCommandsEvent event) {
-        SenderTypeFactory.register(new ForgeEnvyPlayerSender());
         this.commandFactory.registerCompleter(new CrateTabCompleter());
         this.commandFactory.registerInjector(ForgeEnvyPlayer.class, (source, args) -> {
             ForgeEnvyPlayer onlinePlayer = this.playerManager.getOnlinePlayer(args[0]);
@@ -136,9 +134,9 @@ public class EnvyCrates {
             }
 
             BlockPos pos = new BlockPos(
-                    UtilParse.parseInteger(split[0].replace("~", player.position().x + "")).orElse(-1),
-                    UtilParse.parseInteger(split[1].replace("~", player.position().y + "")).orElse(-1),
-                    UtilParse.parseInteger(split[2].replace("~", player.position().z + "")).orElse(-1)
+                    UtilParse.parseInt(split[0].replace("~", player.position().x + "")).orElse(-1),
+                    UtilParse.parseInt(split[1].replace("~", player.position().y + "")).orElse(-1),
+                    UtilParse.parseInt(split[2].replace("~", player.position().z + "")).orElse(-1)
             );
 
             BlockState blockState = player.level().getBlockState(pos);
@@ -152,10 +150,9 @@ public class EnvyCrates {
 
             return pos;
         });
-        this.commandFactory.registerInjector(CrateType.class, (source, args) -> {
-            return CrateFactory.get(args[0]); //TODO
-        });
-        this.commandFactory.registerCommand(event.getDispatcher(), new EnvyCrateCommand());
+        this.commandFactory.registerInjector(CrateType.class, (source, args) -> CrateFactory.get(args[0]));
+
+        this.commandFactory.registerCommand(event.getDispatcher(), this.commandFactory.parseCommand(new EnvyCrateCommand()));
     }
 
     public static EnvyCrates getInstance() {
