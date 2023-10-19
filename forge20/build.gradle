@@ -5,10 +5,10 @@ plugins {
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
-forgeVersion = "1.20.1"
+forgeVersion = "1.20.2"
 
 minecraft {
-    mappings channel: 'official', version: '1.20.1'
+    mappings channel: 'official', version: "1.20.2"
 }
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
@@ -16,12 +16,12 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 repositories {}
 
 dependencies {
-    minecraft "net.minecraftforge:forge:1.20.1-47.1.44"
+    minecraft 'net.minecraftforge:forge:1.20.2-48.0.30'
 
-    implementation group: 'org.spongepowered', name: 'configurate-yaml', version: '4.0.0'
+    implementation group: 'org.spongepowered', name: 'configurate-yaml', version: '4.2.0-COMMENTS'
 
-    shadow group: 'com.envyful.api', name: 'commons', version: '5.1.8'
-    shadow (group: 'com.envyful.api', name: 'forge20', version: '5.1.8') {
+    shadow group: 'com.envyful.api', name: 'commons', version: '5.5.2'
+    shadow (group: 'com.envyful.api', name: 'forge20', version: '5.5.2') {
         transitive = false;
     }
 }
@@ -31,26 +31,24 @@ shadowJar {
     setArchiveClassifier('')
     setArchiveBaseName("${rootProject.name}-Forge")
 
-    relocate('org.spongepowered.configurate', 'com.envyful.crates.shade.configurate')
-    relocate('org.yaml.snakeyaml', 'com.envyful.crates.shade.snakeyaml')
-    relocate('io.leangen.geantyref', 'com.envyful.crates.shade.geantyref')
-    relocate('com.google.gson', 'com.envyful.crates.shade.gson')
-    relocate('com.zaxxer', 'com.envyful.crates.shade.hikari')
-    relocate('org.slf4j', 'com.envyful.crates.shade.slf4j')
-    relocate('com.envyful.api', 'com.envyful.crates.shade.envy.api')
-    relocate('org.bstats', 'com.envyful.crates.shade.bstats')
-    relocate('com.google.common', 'com.envyful.crates.shade.guava')
-    relocate('org.apache.logging', 'com.envyful.crates.shade.log4j')
-    relocate('io.netty', 'com.envyful.crates.shade.netty')
-    relocate('io.lettuce', 'com.envyful.crates.shade.lettuce')
-    relocate('com.cronutils', 'com.envyful.crates.shade.cronutils')
-    relocate('com.cronutils', 'com.envyful.crates.shade.cronutils')
-    relocate('com.sun.el', 'com.envyful.crates.shade.sun.el')
-    relocate('javax', 'com.envyful.crates.shade.javax')
-    relocate('javax', 'com.envyful.crates.shade.javax')
-    relocate('org.reactivestreams', 'com.envyful.crates.shade.reactivestreams')
-    relocate('reactor', 'com.envyful.crates.shade.reactor')
+    relocate('org.spongepowered.configurate', 'com.envyful.wonder.trade.shade.configurate')
+    relocate('org.yaml.snakeyaml', 'com.envyful.wonder.trade.shade.snakeyaml')
+    relocate('io.leangen.geantyref', 'com.envyful.wonder.trade.shade.geantyref')
+    relocate('com.zaxxer', 'com.envyful.wonder.trade.shade.hikari')
+    relocate('org.slf4j', 'com.envyful.wonder.trade.shade.slf4j')
+    relocate('com.envyful.api', 'com.envyful.wonder.trade.shade.envy.api')
+    relocate('org.bstats', 'com.envyful.wonder.trade.shade.bstats')
+    relocate('org.apache.logging', 'com.envyful.wonder.trade.shade.log4j')
+    relocate('io.netty', 'com.envyful.wonder.trade.shade.netty')
+    relocate('io.lettuce', 'com.envyful.wonder.trade.shade.lettuce')
+    relocate('com.cronutils', 'com.envyful.wonder.trade.shade.cronutils')
+    relocate('com.cronutils', 'com.envyful.wonder.trade.shade.cronutils')
+    relocate('com.sun.el', 'com.envyful.wonder.trade.shade.sun.el')
+    relocate('org.reactivestreams', 'com.envyful.wonder.trade.shade.reactivestreams')
+    relocate('reactor', 'com.envyful.wonder.trade.shade.reactor')
 
+    exclude "com/google/**"
+    exclude "javax/**"
     exclude "**/module-info.class"
     exclude "**/*.properties"
     exclude "**/*.xml"
