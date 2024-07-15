@@ -4,7 +4,6 @@ import com.envyful.api.concurrency.UtilLogger;
 import com.envyful.api.config.yaml.YamlConfigFactory;
 import com.envyful.api.forge.chat.UtilChatColour;
 import com.envyful.api.forge.command.ForgeCommandFactory;
-import com.envyful.api.forge.command.parser.ForgeAnnotationCommandParser;
 import com.envyful.api.forge.gui.factory.ForgeGuiFactory;
 import com.envyful.api.forge.player.ForgeEnvyPlayer;
 import com.envyful.api.forge.player.ForgePlayerManager;
@@ -39,18 +38,18 @@ public class EnvyCrates {
 
     public static final String KEY_NBT_TAG = "ENVY_CRATES";
 
+    private static final Logger LOGGER = LogManager.getLogger("envycrates");
+
     private static EnvyCrates instance;
 
-    private Logger logger = LogManager.getLogger("envycrates");
-
     private ForgePlayerManager playerManager = new ForgePlayerManager();
-    private ForgeCommandFactory commandFactory = new ForgeCommandFactory(ForgeAnnotationCommandParser::new, playerManager);
+    private ForgeCommandFactory commandFactory = new ForgeCommandFactory(playerManager);
 
     private EnvyCratesLocale locale;
 
     public EnvyCrates() {
         instance = this;
-        UtilLogger.setLogger(this.logger);
+        UtilLogger.setLogger(LOGGER);
         MinecraftForge.EVENT_BUS.register(this);
     }
 
@@ -160,14 +159,14 @@ public class EnvyCrates {
     }
 
     public static Logger getLogger() {
-        return instance.logger;
+        return LOGGER;
     }
 
-    public ForgePlayerManager getPlayerManager() {
-        return this.playerManager;
+    public static ForgePlayerManager getPlayerManager() {
+        return instance.playerManager;
     }
 
-    public EnvyCratesLocale getLocale() {
-        return this.locale;
+    public static EnvyCratesLocale getLocale() {
+        return instance.locale;
     }
 }

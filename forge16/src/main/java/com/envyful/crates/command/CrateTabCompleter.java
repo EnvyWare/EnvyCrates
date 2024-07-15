@@ -9,16 +9,7 @@ import java.lang.annotation.Annotation;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CrateTabCompleter implements TabCompleter<CrateType, ICommandSource> {
-    @Override
-    public Class<ICommandSource> getSenderClass() {
-        return ICommandSource.class;
-    }
-
-    @Override
-    public Class<CrateType> getCompletedClass() {
-        return CrateType.class;
-    }
+public class CrateTabCompleter implements TabCompleter<ICommandSource> {
 
     @Override
     public List<String> getCompletions(ICommandSource sender, String[] currentData, Annotation... completionData) {

@@ -7,11 +7,12 @@ import com.envyful.api.command.annotate.executor.CommandProcessor;
 import com.envyful.api.command.annotate.executor.Completable;
 import com.envyful.api.command.annotate.executor.Sender;
 import com.envyful.api.command.annotate.permission.Permissible;
-import com.envyful.api.forge.chat.UtilChatColour;
-import com.envyful.api.forge.player.ForgeEnvyPlayer;
+import com.envyful.api.platform.PlatformProxy;
 import com.envyful.crates.EnvyCrates;
 import com.envyful.crates.type.crate.CrateType;
 import net.minecraft.commands.CommandSource;
+
+import java.util.List;
 
 @Command(
         value = {
@@ -28,9 +29,9 @@ public class GiveKeyAllCommand {
     public void onCommand(@Sender CommandSource sender,
                           @Completable(CrateTabCompleter.class) @Argument CrateType crate,
                           @Argument(defaultValue = "1") int amount) {
-        sender.sendSystemMessage(UtilChatColour.colour("&e&l(!) &eGiving keys to all online players"));
+        PlatformProxy.sendMessage(sender, List.of("&e&l(!) &eGiving keys to all online players"));
 
-        for (ForgeEnvyPlayer player : EnvyCrates.getInstance().getPlayerManager().getOnlinePlayers()) {
+        for (var player : EnvyCrates.getPlayerManager().getOnlinePlayers()) {
             crate.giveKey(player, amount);
         }
     }

@@ -111,9 +111,9 @@ public class CrateFactory {
                 String world = args[0];
                 String[] split = args[1].split(",");
                 BlockPos pos = new BlockPos(
-                        UtilParse.parseInteger(split[0]).orElse(0),
-                        UtilParse.parseInteger(split[1]).orElse(0),
-                        UtilParse.parseInteger(split[2]).orElse(0)
+                        UtilParse.parseInt(split[0]).orElse(0),
+                        UtilParse.parseInt(split[1]).orElse(0),
+                        UtilParse.parseInt(split[2]).orElse(0)
                 );
                 CRATES.put(Pair.of(world, pos), args[2]);
             }

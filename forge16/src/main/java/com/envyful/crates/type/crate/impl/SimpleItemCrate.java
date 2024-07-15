@@ -147,9 +147,9 @@ public class SimpleItemCrate extends AbstractCrateType {
                 .addPane(pane)
                 .title(UtilChatColour.colour(this.previewGuiSettings.getTitle()))
                 .height(this.previewGuiSettings.getHeight())
-                .setPlayerManager(EnvyCrates.getInstance().getPlayerManager())
+                .setPlayerManager(EnvyCrates.getPlayerManager())
                 .build()
-                .open(EnvyCrates.getInstance().getPlayerManager().getPlayer(player.getParent()));
+                .open(EnvyCrates.getPlayerManager().getPlayer(player.getParent()));
     }
 
     @Override
@@ -240,12 +240,12 @@ public class SimpleItemCrate extends AbstractCrateType {
                 .addPane(pane)
                 .title(UtilChatColour.colour(this.displayGuiSettings.getTitle()))
                 .height(this.displayGuiSettings.getHeight())
-                .setPlayerManager(EnvyCrates.getInstance().getPlayerManager())
+                .setPlayerManager(EnvyCrates.getPlayerManager())
                 .closeConsumer(GuiFactory.closeConsumerBuilder()
                         .async()
                         .handler(envyPlayer -> finalReward.give(player))
                         .build())
                 .build()
-                .open(EnvyCrates.getInstance().getPlayerManager().getPlayer(player.getParent()));
+                .open(EnvyCrates.getPlayerManager().getPlayer(player.getParent()));
     }
 }
