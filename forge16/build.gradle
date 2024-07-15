@@ -31,11 +31,11 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.16.5-36.2.34'
+    minecraft 'net.minecraftforge:forge:1.16.5-36.2.39'
 
     shadow group: 'org.spongepowered', name: 'configurate-yaml', version: '4.0.0'
-    shadow (group: 'com.envyful.api', name: 'commons', version: '5.0.1')
-    shadow (group: 'com.envyful.api', name: 'forge16', version: '5.0.1') {
+    shadow (group: 'com.envyful.api', name: 'commons', version: '6.4.2')
+    shadow (group: 'com.envyful.api', name: 'forge16', version: '6.4.2') {
         transitive = false
     }
 }
